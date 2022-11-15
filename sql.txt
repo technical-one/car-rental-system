@@ -1,0 +1,120 @@
+create table car_data(S_No int NOT NULL,Car_id int PRIMARY KEY,Car_Name varchar(20)
+UNIQUE,Price varchar(10),Color varchar(10),Mileage int,Description varchar(30));
+
+
+insert into car_data(S_No,Car_id,Car_Name,Price,Color,Mileage,Description) values 
+(1,100,'FORTUNER','30 lacs','White',25,'7 seater SUV');
+
+
+insert into car_data(S_No,Car_id,Car_Name,Price,Color,Mileage,Description) values 
+(2,101,'SCORPIO','18 lacs','Black',19,'7 seater SUV');
+
+
+insert into car_data(S_No,Car_id,Car_Name,Price,Color,Mileage,Description) values 
+(3,102,'CRETA','18 lacs','Cyan',22,'5 seater SEDAN');
+
+
+insert into car_data(S_No,Car_id,Car_Name,Price,Color,Mileage,Description) values 
+(4,103,'HONDA CITY','20 lacs','Grey',28,'5 seater SEDAN');
+
+
+insert into car_data(S_No,Car_id,Car_Name,Price,Color,Mileage,Description) values 
+(5,104,'MERCEDES BENZ','67 lacs','Red',16,'4 seater SEDAN');
+
+
+DROP TABLE CAR_DATA;
+
+
+create table car_rent(S_NO int NOT NULL,Car_id int PRIMARY KEY,Rent_OneDay 
+varchar(20) UNIQUE,Customer_ratings varchar(10));
+
+
+insert into car_rent(S_NO,Car_id,Rent_OneDay,Customer_ratings) values (1,100,'2000 
+Rupees','4.4 *');
+
+
+insert into car_rent(S_NO,Car_id,Rent_OneDay,Customer_ratings) values (2,101,'1600 
+Rupees','4.3 *');
+
+
+insert into car_rent(S_NO,Car_id,Rent_OneDay,Customer_ratings) values (3,102,'1400 
+Rupees','4.6 *');
+
+
+insert into car_rent(S_NO,Car_id,Rent_OneDay,Customer_ratings) values (4,103,'1800 
+Rupees','4.7 *');
+
+
+insert into car_rent(S_NO,Car_id,Rent_OneDay,Customer_ratings) values (5,104,'8000 
+Rupees','4.9 *');
+
+
+DROP TABLE CAR_RENT;
+
+
+create table rented_cars(Receipt_No int PRIMARY KEY,Car_id int,Customer_name 
+varchar(20),Customer_phone number(10) UNIQUE,Days_rented int,Total_rent int);
+
+
+insert into rented_cars(Receipt_No) values (1);
+
+
+DROP TABLE RENTED_CARS;
+
+
+Declare
+ Enter_Car_id number;
+ Enter_Your_Name varchar(20);
+ Enter_Days_for_rent number;
+ Enter_Contact_Number number;
+ e number;
+Begin
+select Car_id,Customer_name,Days_rented,Customer_phone,Total_rent into 
+Enter_Car_id,Enter_Your_Name,Enter_Days_for_rent,Enter_Contact_Number,e from 
+rented_cars where Receipt_No=1;
+Enter_Car_id:=:Enter_Car_id;
+Enter_Your_Name:=:Enter_Your_Name;
+Enter_Days_for_rent:=:Enter_Days_for_rent;
+Enter_Contact_Number:=:Enter_Contact_Number;
+CASE
+WHEN Enter_Car_id =100
+THEN e:= 1600 * Enter_Days_for_rent;
+ dbms_output.put_line('You booked a FORTUNER,thanks for booking!');
+WHEN Enter_Car_id=101 
+THEN e:= 2000 * Enter_Days_for_rent;
+ dbms_output.put_line('You booked a SCORPIO,thanks for booking!');
+WHEN Enter_Car_id=102 
+THEN e:= 1400 * Enter_Days_for_rent;
+ dbms_output.put_line('You booked a CRETA,thanks for booking!');
+WHEN Enter_Car_id=103 
+THEN e:= 1800 * Enter_Days_for_rent;
+ dbms_output.put_line('You booked a HONDA CITY,thanks for booking!');
+WHEN Enter_Car_id=104 
+THEN e:= 8000 * Enter_Days_for_rent;
+ dbms_output.put_line('You booked a MERCEDES BENZ,thanks for booking!');
+ELSE dbms_output.put_line('Enter Valid Car_id,please enter a valid CAR ID for 
+booking');
+END CASE;
+update rented_cars set 
+Car_id=Enter_Car_id,Customer_name=Enter_Your_Name,Days_rented=Enter_Days_for_rent,c
+ustomer_phone=Enter_Contact_Number,Total_rent=e where Receipt_No=1;
+end;
+
+
+--SHOWS INFORMATION ABOUT CARS
+select * from car_data;
+
+
+--SHOWS AVAILABLE RENTS FOR CARS
+select * from car_rent;
+
+
+--CUSTOMER FEEDBACK WITH RENT
+select 
+car_data.car_id,car_data.car_name,car_rent.rent_oneday,car_rent.customer_ratings
+from car_data
+INNER JOIN car_rent on car_data.car_id=car_rent.car_id;
+
+
+--RENT RECEIPT FOR CUSTOMER
+select * from rented_cars;
